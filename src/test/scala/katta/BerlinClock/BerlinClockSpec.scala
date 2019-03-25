@@ -1,22 +1,23 @@
-package scala.katta
+package katta.BerlinClock
 
-import org.scalatest._
+import katta.UnitSpec
 
 class BerlinClockSpec extends UnitSpec {
   "Red lamp" should "can switch state" in {
-    (RedLight.Off()).toString() should be ("O")
-    (RedLight.On()).toString() should be ("R")
-    RedLight.On().Toggle().toString() should be ("O")
+    new RedLight().Off().toString() should be ("O")
+    new RedLight().On().toString() should be ("R")
+    new RedLight().On().Toggle().toString() should be ("O")
   }
 
   "On Circuit" should "switch on always" in {
-    new OnCircuit(RedLight).on(0) should be (true)
-    new OnCircuit(RedLight).on(10) should be (true)
-    new OnCircuit(YellowLight).on(5) should be (true)
+    new OnCircuit(new RedLight()).on(0) should be (true)
+    new OnCircuit(new RedLight()).on(10) should be (true)
+    new OnCircuit(new YellowLight).on(5) should be (true)
   }
 
   "On Circuit" should "print light" in {
-    (new OnCircuit(RedLight).supply(0)).toString() should be ("R")
+    new OnCircuit(new RedLight()).supply(0).toString() should be ("R")
+    new OnCircuit(new YellowLight).supply(0).toString() should be ("Y")
   }
 
   "Led Panel" should "had lights" in {
@@ -24,17 +25,17 @@ class BerlinClockSpec extends UnitSpec {
       new Panel(
         1,
         Array(
-          new OnCircuit(RedLight),
-          new OnCircuit(YellowLight)
+          new OnCircuit(new RedLight()),
+          new OnCircuit(new YellowLight)
         )
       )
-    ).toString() should be ("RY")
+      ).toString() should be ("RY")
   }
 
   "Blink Panel" should "blink on/off every two seconds" in {
-//    new BlinkPanel(0).toString() should be ("Y")
- //   new BlinkPanel(1).toString() should be ("0")
-  //  new BlinkPanel(11).toString() should be ("0")
+    new BlinkPanel(0).toString() should be ("Y")
+    new BlinkPanel(1).toString() should be ("O")
+    new BlinkPanel(11).toString() should be ("O")
   }
 
   "Yellow lamp" should "blink on/off every two seconds" in {
@@ -46,6 +47,14 @@ class BerlinClockSpec extends UnitSpec {
   "Top hours" should "have 4 lamps" in {
     BerlinClock.topHours(7).length should be (4)
   }
+
+  "Top Hour panel" should "light a red lamp for every 5 pulses" in {
+    new TopHourPanel(4).toString should be ("OOOO")
+    new TopHourPanel(10).toString should be ("RROO")
+    new TopHourPanel(23).toString should be ("RRRR")
+    new TopHourPanel(24).toString should be ("RRRR")
+  }
+
 
   it should "light a red lamp for every 5 hours" in {
     BerlinClock.topHours(0) should be ("OOOO")

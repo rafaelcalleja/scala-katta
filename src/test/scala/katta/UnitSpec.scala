@@ -1,4 +1,4 @@
-package scala.katta;
+package katta
 
 import org.scalatest._
 
