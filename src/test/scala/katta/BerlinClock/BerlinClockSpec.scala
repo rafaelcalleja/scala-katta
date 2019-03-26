@@ -21,15 +21,14 @@ class BerlinClockSpec extends UnitSpec {
   }
 
   "Led Panel" should "had lights" in {
-    (
-      new Panel(
-        1,
-        Array(
-          new OnCircuit(new RedLight()),
-          new OnCircuit(new YellowLight)
-        )
+    new Panel(
+      1,
+      Array(
+        new OnCircuit(new RedLight()),
+        new OnCircuit(new YellowLight)
       )
-      ).toString() should be ("RY")
+    )
+    .toString() should be ("RY")
   }
 
   "Blink Panel" should "blink on/off every two seconds" in {
@@ -38,14 +37,8 @@ class BerlinClockSpec extends UnitSpec {
     new BlinkPanel(11).toString() should be ("O")
   }
 
-  "Yellow lamp" should "blink on/off every two seconds" in {
-    BerlinClock.seconds(0) should be ("Y")
-    BerlinClock.seconds(1) should be ("O")
-    BerlinClock.seconds(11) should be ("O")
-  }
-
-  "Top hours" should "have 4 lamps" in {
-    BerlinClock.topHours(7).length should be (4)
+  "Top hours panel" should "have 4 lamps" in {
+    new TopHourPanel(7).Length should be (4)
   }
 
   "Top Hour panel" should "light a red lamp for every 5 pulses" in {
@@ -55,58 +48,50 @@ class BerlinClockSpec extends UnitSpec {
     new TopHourPanel(24).toString should be ("RRRR")
   }
 
-
-  it should "light a red lamp for every 5 hours" in {
-    BerlinClock.topHours(0) should be ("OOOO")
-    BerlinClock.topHours(13) should be ("RROO")
-    BerlinClock.topHours(23) should be ("RRRR")
-    BerlinClock.topHours(24) should be ("RRRR")
+  "Bottom hours panel" should "have 4 lamps" in {
+    new BottomHourPanel(5).Length should be (4)
   }
 
-  "Bottom hours" should "have 4 lamps" in {
-    BerlinClock.bottomHours(5).length should be (4)
-  }
-
-  it should "light a red lamp for every hour left from top hours" in {
-    BerlinClock.bottomHours(0) should be ("OOOO")
-    BerlinClock.bottomHours(13) should be ("RRRO")
-    BerlinClock.bottomHours(23) should be ("RRRO")
-    BerlinClock.bottomHours(24) should be ("RRRR")
+  "Bottom Hour panel" should "light a red lamp for every hour left from top hours panel" in {
+    new BottomHourPanel(4).toString should be ("OOOO")
+    new BottomHourPanel(13).toString should be ("RRRO")
+    new BottomHourPanel(23).toString should be ("RRRO")
+    new BottomHourPanel(24).toString should be ("RRRR")
   }
 
   "Top minutes" should "have 11 lamps" in {
-    BerlinClock.topMinutes(34).length should be (11)
+    new TopMinutesPanel(34).Length should be (11)
   }
 
-  it should "have 3rd, 6th and 9th lamps in red to indicate first quarter, half and last quarter" in {
-    val minutes32 = BerlinClock.topMinutes(32)
+  "Top Minutes Panel" should "have 3rd, 6th and 9th lamps in red to indicate first quarter, half and last quarter" in {
+    val minutes32 =  new TopMinutesPanel(32).toString
     minutes32(2) should be ('R')
     minutes32(5) should be ('R')
     minutes32(8) should be ('O')
   }
 
-  it should "light a yellow lamp for every 5 minutes unless it's first quarter, half or last quarter" in {
-    BerlinClock.topMinutes(0) should be ("OOOOOOOOOOO")
-    BerlinClock.topMinutes(17) should be ("YYROOOOOOOO")
-    BerlinClock.topMinutes(59) should be ("YYRYYRYYRYY")
+  "Top Minutes Panel" should "light a yellow lamp for every 5 minutes unless it's first quarter, half or last quarter panel" in {
+    new TopMinutesPanel(0).toString should be ("OOOOOOOOOOO")
+    new TopMinutesPanel(17).toString should be ("YYROOOOOOOO")
+    new TopMinutesPanel(59).toString should be ("YYRYYRYYRYY")
   }
 
-  "Bottom minutes" should "have 4 lamps" in {
-    BerlinClock.bottomMinutes(0).length should be (4)
+  "Bottom minutes Panel" should "have 4 lamps" in {
+    new BottomMinutesPanel(0).Length should be (4)
   }
 
-  it should "light a yellow lamp for every minute left from top minutes" in {
-    BerlinClock.bottomMinutes(0) should be ("OOOO")
-    BerlinClock.bottomMinutes(17) should be ("YYOO")
-    BerlinClock.bottomMinutes(59) should be ("YYYY")
+  "Bottom minutes Panel" should "light a yellow lamp for every minute left from top minutes panel" in {
+    new BottomMinutesPanel(0).toString should be ("OOOO")
+    new BottomMinutesPanel(17).toString should be ("YYOO")
+    new BottomMinutesPanel(59).toString should be ("YYYY")
   }
 
   "Berlin Clock" should "result in array with 5 elements" in {
-    BerlinClock.convertToBerlinTime("13:17:01").size should be (5)
+    BerlinClockPanel.convertToBerlinTime("13:17:01").length should be (5)
   }
 
-  it should "result in correct seconds, hours and minutes" in {
-    val berlinTime = BerlinClock.convertToBerlinTime("16:37:16")
+  "Berlin Clock Panel" should "result in correct seconds, hours and minutes using panel" in {
+    val berlinTime = BerlinClockPanel.convertToBerlinTime("16:37:16")
     val expected = Array("Y", "RRRO", "ROOO", "YYRYYRYOOOO", "YYOO")
     berlinTime should equal (expected)
   }

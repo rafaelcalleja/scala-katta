@@ -84,6 +84,13 @@ class PulsesCircuit(pulse: Int, light: Light) extends CircuitsLight (light) {
   }
 }
 
+class FractalCircuit(fractal: Int, pulse: Int, light: Light) extends CircuitsLight (light) {
+  def on(moment: Int): Boolean = {
+    var difference = math.floor(moment / fractal).toInt * fractal
+    moment - difference >= pulse && difference > fractal
+  }
+}
+
 class BlinkPanel(moment: Int) extends {
 
 } with Panel (moment, Array(
@@ -92,109 +99,54 @@ class BlinkPanel(moment: Int) extends {
 
 class TopHourPanel(moment: Int) extends {
 } with Panel (moment, Array(
-    new PulsesCircuit(5, new RedLight()),
+    new PulsesCircuit(5, new RedLight),
     new PulsesCircuit(10, new RedLight),
     new PulsesCircuit(15, new RedLight),
     new PulsesCircuit(20, new RedLight)
 ))
 
-abstract class Lamp extends Light {
-  val size: Int
-}
+class BottomHourPanel(moment: Int) extends {
+} with Panel (moment, Array(
+  new FractalCircuit(5, 1, new RedLight),
+  new FractalCircuit(5, 2, new RedLight),
+  new FractalCircuit(5, 3, new RedLight),
+  new FractalCircuit(5, 4, new RedLight)
+))
 
-object BerlinClock {
-  def seconds(second: Int) : String = {
-    if (second % 2 == 0)
-      "Y"
-    else
-      "O"
-  }
+class TopMinutesPanel(moment: Int) extends {
+} with Panel (moment, Array(
+  new PulsesCircuit(5, new YellowLight),
+  new PulsesCircuit(10, new YellowLight),
+  new PulsesCircuit(15, new RedLight),
+  new PulsesCircuit(20, new YellowLight),
+  new PulsesCircuit(25, new YellowLight),
+  new PulsesCircuit(30, new RedLight),
+  new PulsesCircuit(35, new YellowLight),
+  new PulsesCircuit(40, new YellowLight),
+  new PulsesCircuit(45, new RedLight),
+  new PulsesCircuit(50, new YellowLight),
+  new PulsesCircuit(55, new YellowLight),
+))
 
-  def topHours(hour: Int): String = {
-    val div: Int = math.floor(hour / 5).toInt
+class BottomMinutesPanel(moment: Int) extends {
+} with Panel (moment, Array(
+  new FractalCircuit(5, 1, new YellowLight),
+  new FractalCircuit(5, 2, new YellowLight),
+  new FractalCircuit(5, 3, new YellowLight),
+  new FractalCircuit(5, 4, new YellowLight)
+))
 
-    if (div == 4)
-      "RRRR"
-    else if (div == 3)
-      "RRRO"
-    else if (div == 2)
-      "RROO"
-    else if (div == 1)
-      "ROOO"
-    else
-      "OOOO"
-  }
 
-  def bottomHours(hour: Int): String = {
-    val div: Int = hour - (math.floor(hour / 5).toInt * 5)
-
-    if (div == 4)
-      "RRRR"
-    else if (div == 3)
-      "RRRO"
-    else if (div == 2)
-      "RROO"
-    else if (div == 1)
-      "ROOO"
-    else
-      "OOOO"
-  }
-
-  def topMinutes(minutes: Int): String = {
-    val div: Int = math.floor(minutes / 5).toInt
-
-    if (div == 11)
-      "YYRYYRYYRYY"
-    else if (div == 10)
-      "YYRYYRYYRYO"
-    else if (div == 9)
-      "YYRYYRYYROO"
-    else if (div == 8)
-      "YYRYYRYYOOO"
-    else if (div == 7)
-      "YYRYYRYOOOO"
-    else if (div == 6)
-      "YYRYYROOOOO"
-    else if (div == 5)
-      "YYRYYOOOOOO"
-    else if (div == 4)
-      "YYRYOOOOOOO"
-    else if (div == 3)
-      "YYROOOOOOOO"
-    else if (div == 2)
-      "YYOOOOOOOOO"
-    else if (div == 1)
-      "YOOOOOOOOOO"
-    else
-      "OOOOOOOOOOO"
-  }
-
-  def bottomMinutes(minutes: Int): String = {
-    val div: Int = minutes - (math.floor(minutes / 5).toInt * 5)
-
-    if (div == 4)
-      "YYYY"
-    else if (div == 3)
-      "YYYO"
-    else if (div == 2)
-      "YYOO"
-    else if (div == 1)
-      "YOOO"
-    else
-      "OOOO"
-  }
-
+object BerlinClockPanel {
   def convertToBerlinTime(dateTime: String): Array[String] = {
     val dateTimeArray: Array[String] = dateTime.split(":")
 
     Array(
-      seconds(dateTimeArray(2).toInt),
-      topHours(dateTimeArray(0).toInt),
-      bottomHours(dateTimeArray(0).toInt),
-      topMinutes(dateTimeArray(1).toInt),
-      bottomMinutes(dateTimeArray(1).toInt)
+      new BlinkPanel(dateTimeArray(2).toInt).toString,
+      new TopHourPanel(dateTimeArray(0).toInt).toString,
+      new BottomHourPanel(dateTimeArray(0).toInt).toString,
+      new TopMinutesPanel(dateTimeArray(1).toInt).toString,
+      new BottomMinutesPanel(dateTimeArray(1).toInt).toString
     )
   }
-
-
 }
