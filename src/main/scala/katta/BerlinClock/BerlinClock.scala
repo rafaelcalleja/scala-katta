@@ -139,14 +139,14 @@ class BottomMinutesPanel(moment: Int) extends {
 
 object BerlinClockPanel {
   def convertToBerlinTime(dateTime: String): Array[String] = {
-    val dateTimeArray: Array[String] = dateTime.split(":")
+    val dateTimeArray: Array[Int] = dateTime.split(":").map(_.toInt)
 
     Array(
-      new BlinkPanel(dateTimeArray(2).toInt).toString,
-      new TopHourPanel(dateTimeArray(0).toInt).toString,
-      new BottomHourPanel(dateTimeArray(0).toInt).toString,
-      new TopMinutesPanel(dateTimeArray(1).toInt).toString,
-      new BottomMinutesPanel(dateTimeArray(1).toInt).toString
+      new BlinkPanel(dateTimeArray(2)).toString,
+      new TopHourPanel(dateTimeArray(0)).toString,
+      new BottomHourPanel(dateTimeArray(0)).toString,
+      new TopMinutesPanel(dateTimeArray(1)).toString,
+      new BottomMinutesPanel(dateTimeArray(1)).toString
     )
   }
 }
