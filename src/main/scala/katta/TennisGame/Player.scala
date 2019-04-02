@@ -1,24 +1,15 @@
 package katta.TennisGame
 
-case class Player (var name: String)
+import scala.language.implicitConversions
 
-/*class Player {
-  var name: String = _
+case class Player (var name: String, var gamePoint: GamePoint) {
+  def winBall(): Unit = {
+    gamePoint = GamePoint(gamePoint.point + 1)
+  }
+
+  def score(): Int = gamePoint.point
 }
 
 object Player {
-  def apply(name: String): Player = {
-    var p = new Player
-    p.name = name
-    p
-  }
-
-// want accessor and mutator methods for the name and age fields
-case class Person (var name: String, var age: Int)
-
-// define two auxiliary constructors
-object Person {
-    def apply() = new Person("<no name>", 0)
-    def apply(name: String) = new Person(name, 0)
+  def apply(name: String) = new Player(name, GamePoint(0))
 }
-}*/
