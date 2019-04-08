@@ -2,16 +2,26 @@ package katta.Permutations
 
 object Permutations {
   def apply(value: String): Array[String] = {
-    val list = value.toList.map(x => x.toString)
+    permutate(value).distinct.toArray
+  }
 
-    var ret = List[String]()
+  def permutate(value: String, output: List[String] = List[String]()): List[String] = {
+    val input = value.toList.map(x => x.toString)
+    var returnOutput = output
 
-    val iterateOver = list.zipWithIndex.map{ case(x,i) => list(i) + list.filter(_ != list(i)).mkString}
+    if (returnOutput.contains(value)) {
+      return returnOutput
+    }
 
-    iterateOver.zipWithIndex.foreach(
-      { case(x,y) => x.zipWithIndex.foreach{ case(a, b)  => ret = x.toList(b) + x.toList.filter(_ != x.toList(b)).mkString :: ret} }
-    )
+    returnOutput = returnOutput :+ value
 
-    ret.distinct.toArray
+    input.zipWithIndex.foreach{ case(x,i) =>
+        var newValue = input(i) + input.filter(_ != input(i)).mkString
+        if (!returnOutput.contains(newValue)) {
+           returnOutput = permutate(newValue, returnOutput)
+        }
+    }
+
+    returnOutput.distinct
   }
 }
