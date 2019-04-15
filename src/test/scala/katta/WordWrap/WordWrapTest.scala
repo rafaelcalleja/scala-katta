@@ -1,7 +1,7 @@
 package katta.WordWrap
 
 import org.scalatest.{Matchers, FlatSpec}
-import com.wordpress.technologyconversations.learning.kata.solutions.WordWrap._
+import katta.WordWrap.WordWrap._
 
 class WordWrapTest extends FlatSpec with Matchers {
 
