@@ -1,12 +1,12 @@
 package katta.WordWrap
 
-case class Paragraph[TextLine](value: TextLine) {
-  def next: Option[Paragraph[TextLine]] =  {
-    val textLine = value.asInstanceOf[katta.WordWrap.TextLine]
+case class Paragraph(value: TextLine) {
+  def next: Option[Paragraph] =  {
+    val textLine = value
 
     if ("" != textLine.excessText) {
       val nextTextLine = TextLine(Words(textLine.excessText), textLine.maxLength)
-      Some(new Paragraph[TextLine](nextTextLine.asInstanceOf[TextLine]))
+      Some(Paragraph(nextTextLine))
     } else {
       None
     }
@@ -14,12 +14,12 @@ case class Paragraph[TextLine](value: TextLine) {
 }
 
 object Paragraph {
-  def apply(words: Words, columns: Int): Paragraph[TextLine] = {
+  def apply(words: Words, columns: Int): Paragraph = {
     val currentTextLine = TextLine(words, columns)
-    Paragraph[TextLine](currentTextLine)
+    Paragraph(currentTextLine)
   }
 
-  implicit class Iterable[TextLine](val node: Paragraph[TextLine]) extends AnyVal {
+  implicit class Iterable(val node: Paragraph) extends AnyVal {
     def iterator: Iterator[TextLine] = Iterator
       .iterate(Option(node))(_.flatMap(_.next))
       .takeWhile(_.nonEmpty)
