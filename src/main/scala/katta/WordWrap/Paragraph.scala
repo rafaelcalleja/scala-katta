@@ -5,7 +5,7 @@ case class Paragraph(value: TextLine) {
     val textLine = value
 
     if ("" != textLine.excessText) {
-      val nextTextLine = TextLine(Words(textLine.excessText), textLine.maxLength)
+      val nextTextLine = TextLine(textLine.excessText, textLine.maxLength)
       Some(Paragraph(nextTextLine))
     } else {
       None
@@ -14,8 +14,8 @@ case class Paragraph(value: TextLine) {
 }
 
 object Paragraph {
-  def apply(words: Words, columns: Int): Paragraph = {
-    val currentTextLine = TextLine(words, columns)
+  def apply(text: String, columns: Int): Paragraph = {
+    val currentTextLine = TextLine(text, columns)
     Paragraph(currentTextLine)
   }
 

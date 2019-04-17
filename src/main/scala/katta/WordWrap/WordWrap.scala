@@ -4,7 +4,7 @@ object WordWrap
 {
   implicit class WordWrapUtils(text: String) {
     def wordWrap(columns: Int): String =  {
-      val paragraph = Paragraph(Words(text), columns)
+      val paragraph = Paragraph(text, columns)
       paragraph.iterator.mkString("n")
     }
   }
