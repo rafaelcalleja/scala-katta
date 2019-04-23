@@ -1,4 +1,4 @@
-package essential
+package essential.IntList
 
 import scala.annotation.tailrec
 

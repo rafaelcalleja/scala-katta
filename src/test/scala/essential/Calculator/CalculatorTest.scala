@@ -1,4 +1,4 @@
-package essential
+package essential.Calculator
 
 import org.scalatest.{FlatSpec, Matchers}
 

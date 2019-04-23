@@ -1,4 +1,4 @@
-package essential
+package essential.Tree
 
 import org.scalatest.{FlatSpec, Matchers}
 

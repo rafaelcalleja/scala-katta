@@ -1,4 +1,4 @@
-package essential
+package essential.Sequence
 
 import org.scalatest.{FlatSpec, Matchers}
 
